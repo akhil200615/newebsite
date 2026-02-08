@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BeatFlow Music Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
+.player {
+    width: 320px;
+    background: #181818;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.player img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.song-info {
+    margin-top: 15px;
+}
+
+.song-info h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.song-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.progress-container {
+    background: #404040;
+    height: 5px;
+    border-radius: 5px;
+    margin: 15px 0;
+    cursor: pointer;
+}
+
+.progress {
+    background: #1db954;
+    height: 100%;
+    width: 0%;
+    border-radius: 5px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.controls button:hover {
+    color: #1db954;
+}
+</style>
+</head>
+
+<body>
+
+<div class="player">
+    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4" alt="Album Art">
+
+    <div class="song-info">
+        <h3>Midnight Vibes</h3>
+        <p>Akhil Beats</p>
+    </div>
+
+    <div class="progress-container" onclick="setProgress(event)">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="controls">
+        <button onclick="togglePlay()">▶️</button>
+    </div>
+
+    <audio id="audio">
+        <source src="song.mp3" type="audio/mp3">
+    </audio>
+</div>
+
+<script>
+const audio = document.getElementById("audio");
+const progress = document.getElementById("progress");
+const playBtn = document.querySelector(".controls button");
+
+function togglePlay() {
+    if (audio.paused) {
+        audio.play();
+        playBtn.textContent = "⏸️";
+    } else {
+        audio.pause();
+        playBtn.textContent = "▶️";
+    }
+}
+
+audio.addEventListener("timeupdate", () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = percent + "%";
+});
+
+function setProgress(e) {
+    const width = e.currentTarget.clientWidth;
+    const clickX = e.offsetX;
+    audio.currentTime = (clickX / width) * audio.duration;
+}
+</script>
+
+</body>
+</html>
